@@ -7,7 +7,7 @@
 </p>
 <h2>General testing concepts</h2>
 <p>
-    Testing is a nebulous term with often ill-defined subcategories. We will not attempt to provide authoritative definitions of testing categories here. Our goal is to offer a very high level description of common testing practices, and highlight those that can be performed during the deployment process.
+    Testing is a nebulous term with often ill-defined subcategories. We won't attempt to provide authoritative definitions of testing categories here. Our goal is to offer a high level description of common testing practices, and highlight which can be performed during the deployment process.
 </p>
 <h2>What don't we test during deployments?</h2>
 <p>
@@ -17,7 +17,7 @@
     Integration tests may also be run during the build process to verify that higher level components interact as expected. The components under test may be replaced with a test double to improve reliability, or live instances of the components may be created as part of the test.
 </p>
 <p>
-    Unit and integration tests are run by the CI server, and any package that is made available for deployment is assumed to have passed all its associated unit and integration tests.
+    Unit and integration tests are run by the CI server, and any package made available for deployment is assumed to have passed all its associated unit and integration tests.
 </p>
 <h2>What can we test during deployment?</h2>
 <p>
@@ -47,10 +47,10 @@ Smoke tests are quick tests designed to ensure that applications and services ha
     <li>Completing a series of API calls to a weather service to find a city's latitude and longitude, getting the current weather for the returned location, and returning the forecast for the rest of the week.</li>
 </ul>
 <p>
-    Chaos testing involves deliberately removing or interfering with the components that make up an application to validate that the system is resilient enough to withstand such failures. Chaos testing may be combined with other tests to verify the stability of a degraded system.
+    Chaos testing involves deliberately removing or interfering with the components that make up an application, to validate that the system is resilient enough to withstand such failures. Chaos testing may be combined with other tests to verify the stability of a degraded system.
 </p>
 <p>
-    Usability and acceptance testing typically require a human to use the application to verify that it meets their requirements. The requirements can be subjective, for example, determining if the application is visually appealing. Or the testers may not be technical, and so do not have the option of automating tests. The manual and subjective nature of these tests makes them difficult, if not impossible, to automate, meaning a working copy of the application or application stack must be deployed and made accessible to testers.
+    Usability and acceptance testing typically require a human to use the application to verify that it meets their requirements. The requirements can be subjective, for example, determining if the application is visually appealing. Or the testers may not be technical, and so do not have the option of automating tests. The manual and subjective nature of these tests make them difficult, if not impossible, to automate, meaning a working copy of the application or application stack must be deployed and made accessible to testers.
 </p>
 <h2>Verifiable {{ site.platform }} deployments</h2>
 <p>
