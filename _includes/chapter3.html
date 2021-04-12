@@ -12,7 +12,7 @@
 </p>
 <h2>Dealing with databases during deployments</h2>
 <p>
-    No discussion on seamless deployments can begin without first addressing the issue of database updates.
+    Before we discuss seamless deployments, we should address the issue of database updates.
 </p>
 <p>
     A fundamental aspect of most seamless deployment strategies involves running two versions of your application side
@@ -30,14 +30,14 @@
     updates to the database and application code, and all six versions to be deployed sequentially.
 </p>
 <p>
-    Needless to say, seamless deployments involving databases require a great deal of planning, many small steps to roll
+    Needless to say, seamless deployments involving databases require extensive planning, many small steps to roll
     out the changes, and tight coordination between the database and application code.
 </p>
 <p>
     We won't dive into the specifics of how to engineer an application with forward and backward database compatibility
     in this book. This is an application design concern, and whether or not an application supports forward and backward
-    database compatibility is already determined when it is to be deployed. The deployment strategy does need to take
-    into account whether an application supports running two versions side by side, but can not add this functionality
+    database compatibility is already determined when it is to be deployed. The deployment strategy needs to take
+    into account whether an application supports running two versions side by side, but can't add this functionality
     if it isn't already built into the application.
 </p>
 <h2>Common deployment strategies</h2>
@@ -46,9 +46,12 @@
 </p>
 <h3>Recreate</h3>
 <p>
-    The recreate strategy does not provide a seamless deployment, but is included here as it is the default option for
-    most deployment processes. This strategy involves either removing the existing deployment and deploying the new
-    version, or deploying the new version over the top of the existing deployment.
+    The recreate strategy does not provide a seamless deployment, but it's included here because it's the default option for
+    most deployment processes. This strategy involves either: 
+<ol>
+    <li>Removing the existing deployment and deploying the new version.</li>
+    <li>Deploying the new version over the top of the existing deployment.</li>
+</ol>
 </p>
 <p>
     Both options result in downtime during the period between the existing version being stopped or removed and the new
@@ -89,9 +92,9 @@
 </p>
 <p>
     This strategy is similar to the blue/green strategy in that both will deploy the new version alongside the current
-    version, and run both side by side. Unlike the blue/green strategy, which will cut all traffic over to the new
-    deployment in a single step, the session draining strategy will direct new sessions to the new deployment, while the
-    existing deployment serves traffic to existing sessions.
+    version, and run both side by side. 
+
+    Unlike the blue/green strategy, which will cut all traffic over to the new deployment in a single step, the session draining strategy will direct new sessions to the new deployment, while the existing deployment serves traffic to existing sessions.
 </p>
 <p>
     After the old sessions have expired, the existing deployment can be deleted.
@@ -101,8 +104,8 @@
     compatibility.
 </p>
 <p>
-    Session draining was particularly important for older server side stateful web applications. This style of
-    application has largely gone out of style, in large part because it made it difficult to manage with PaaS offerings
+    Session draining was particularly important for older, server-side stateful web applications. This style of
+    application has largely gone out of style, mostly because it was difficult to manage with PaaS offerings
     that often treated any individual application instance as ephemeral. This book won't cover session draining in
     Kubernetes clusters.
 </p>
@@ -141,7 +144,7 @@
     rely on third party networking tools to provide fine grained control over which services respond to a request.
 </p>
 <p>
-    Kubernetes has no concept of feature branch deployments. However, with some sensible naming conventions it is
+    Kubernetes has no concept of feature branch deployments. However, with some sensible naming conventions, it is
     possible to implement feature branch deployments in a relatively straightforward manner.
 </p>
 <h3>Rolling and recreate deployments</h3>
