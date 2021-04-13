@@ -154,22 +154,22 @@
     or recreate strategy, and the rolling update strategy was selected for us by default.
 </p>
 <p>
-    To make either strategy meaningful we need to deploy more than one pod, so open the <b>Random Quotes - Frontend</b>
-    project, select the <b>Deploy Kubernetes containers</b> step that deploys the frontend application, and then change
+    To make either strategy meaningful we need to deploy more than one pod:
+</p>
+<ol>
+    <li>Open the <b>Random Quotes - Frontend</b> project.</li>
+    <li> Select the <b>Deploy Kubernetes containers</b> step that deploys the frontend application, and then change
     the replicas count to 5. This will result in 5 pods being created hosting the frontend web application, with traffic
-    distributed between them by the service.
-</p>
-<p>
-    Deploy the <b>Random Quotes - Frontend</b> project to the <b>Development</b> environment with the new replica count
-    to populate the cluster with the new pods.
-</p>
-<p>
-    Now redeploy the <b>Random Quotes - Frontend</b> project to the <b>Development</b> environment. When Octopus
-    presents the package versions, expand the packages section, click the <b>SELECT VERSION</b> button next to the
-    <b>octopussamples/randomquotesjava</b> package, tick the <b>Pre-release packages</b> option, and select the
-    <b>0.1.9-purpleheader</b> version. This version of the image replaces the background color of the header displayed
-    by the web application. Click the <b>OK</b> button to select the new version.
-</p>
+    distributed between them by the service.</li>
+    <li>Deploy the <b>Random Quotes - Frontend</b> project to the <b>Development</b> environment with the new replica count
+    to populate the cluster with the new pods.</li>
+    <li>Now redeploy the <b>Random Quotes - Frontend</b> project to the <b>Development</b> environment.</li>
+    <li>When Octopus presents the package versions, expand the packages section, and click the <b>SELECT VERSION</b> button next to the
+    <b>octopussamples/randomquotesjava</b> package.</li>
+    <li>Tick the <b>Pre-release packages</b> option, and select the <b>0.1.9-purpleheader</b> version. This version of the image replaces the background color of the header displayed by the web application. </li>
+    <li>Click the <b>OK</b> button to select the new version.</li>
+ </ol>   
+<p>  
 <p class="note">
     Although Docker tags have no concept of a pre-release, Octopus treats tags like <b>0.1.9-purpleheader</b> as a
     prerelease version, with the identifier <b>purpleheader</b> indicating this is a pre-release.
