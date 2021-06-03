@@ -344,7 +344,7 @@ spec:
     However, the downside to creating your own tentacle images is you're responsible for updating the image with new tool versions and redeploying workers. Lifting these requirements from the base operating system (or base Docker image in our case) into a specialized Docker image is one of the main benefits of container images. 
 </p>
 <p>
-    So, looping back to the reason why we set the <b>privileged</b> mode to <b>true</b>; running a container image in a worker that is itself a Docker container requires running Docker-in-Docker, and running Docker-in-Docker requires privileged containers. With privileged worker containers we can continue to use container images as we did when deploying our application in <a href="#chapter1">chapter 1</a>, and take advantage of all their benefits. For this reason the example tests shown below assume Docker-in-Docker is enabled and container images can be used.
+    Looping back to the reason why we set the <b>privileged</b> mode to <b>true</b>; running a container image in a worker that is itself a Docker container requires running Docker-in-Docker, and running Docker-in-Docker requires privileged containers. With privileged worker containers we can continue to use container images as we did when deploying our application in <a href="#chapter1">chapter 1</a>, and take advantage of all their benefits. For this reason the example tests shown below assume Docker-in-Docker is enabled and container images can be used.
 </p>
 <p>
     The final step is to add the API key generated against the service account earlier, as a secret variable called <b>ApiKey</b>.
@@ -376,7 +376,7 @@ psql \
     All CLI commands return an exit code. Typically a value of zero indicates success. You can view the exit code with the command <b>echo $?</b> in Bash, and <b>echo $LASTEXITCODE</b> in PowerShell. A non-zero value for the last command executed in a script step will cause the step to fail.
 </p>
 <p>
-    It can be hard to understand the layers in running this test script, so let's break it down:
+    It can be hard to understand the layers that went into running this test script, so let's break it down:
 </p>
 <ul>
     <li>We have a tentacle running as a worker in a pod hosted on Kubernetes.</li>
