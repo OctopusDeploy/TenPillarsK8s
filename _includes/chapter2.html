@@ -66,7 +66,7 @@ Smoke tests are quick tests designed to ensure that applications and services ha
     It then follows that any test requiring access to the database will need to be run within the cluster.
 </p>
 <p>
-    Just as workers can be placed on a cloud VM with access to a private network, workers can be run as containers inside a Kubernetes cluster. While traditional tentacles and workers are installed directly on a host operating system, tentacles are also provided as Docker images called <b>octopusdeploy/tentacle</b> hosted on Docker Hub.
+    Just as workers can be placed on a cloud VM with access to a private network, workers can be run as containers inside a Kubernetes cluster. While traditional Tentacles and workers are installed directly on a host operating system, Tentacles are also provided as Docker images called <b>octopusdeploy/tentacle</b> hosted on Docker Hub.
 </p>
 <p>
     To create workers in a Kubernetes cluster, we'll need to define a new worker pool, and a new machine policy that automatically cleans up any unavailable workers.
@@ -96,7 +96,7 @@ Smoke tests are quick tests designed to ensure that applications and services ha
     Pods in a Kubernetes cluster, and the containers they create, are typically considered ephemeral. This means we shouldn't rely on any particular container to run for any length of time. So when running workers in a Kubernetes cluster, we need some way to clean up workers that have been deleted or replaced.
 </p>
 <p>
-    This is where machine policies come in. A machine policy defines the behavior of a tentacle or worker, including how frequently the health and availability of the tentacle is checked, and what to do if a tentacle is unavailable. In our case, we want unavailable workers to be removed from Octopus automatically.
+    This is where machine policies come in. A machine policy defines the behavior of a Tentacle or worker, including how frequently the health and availability of the Tentacle is checked, and what to do if a Tentacle is unavailable. In our case, we want unavailable workers to be removed from Octopus automatically.
 </p>
 <p>
     To create a new machine policy: 
@@ -116,7 +116,7 @@ Smoke tests are quick tests designed to ensure that applications and services ha
 </p>
 <h3>Creating an Octopus service account and API key</h3>
 <p>
-    All workers and tentacles must authenticate themselves with the Octopus server. For shared resources like workers, it's best to create a dedicated Octopus user account to grant access to the server.
+    All workers and Tentacles must authenticate themselves with the Octopus server. For shared resources like workers, it's best to create a dedicated Octopus user account to grant access to the server.
 </p> 
 <p>
     Octopus supports the notion of service accounts to represent external machines connecting to the Octopus server.
@@ -136,7 +136,7 @@ Smoke tests are quick tests designed to ensure that applications and services ha
     Once the service account is created, a new section called <b>API Keys</b> is displayed. Expand it and click the <b>NEW API KEY</b> button. Set the purpose of the new key to <b>Test Worker</b> and click the <b>GENERATE NEW</b> button. Make a note of the API key that is displayed, as this value can not be retrieved again once the dialog is closed.
 </p>
 <p>
-    The service account has been assigned to the <b>Everyone</b> team by default. This team doesn't grant the required permissions to register a new tentacle, so we'll need to create a new team.
+    The service account has been assigned to the <b>Everyone</b> team by default. This team doesn't grant the required permissions to register a new Tentacle, so we'll need to create a new team.
 </p>
 <p>
   <ol>
@@ -157,7 +157,7 @@ Smoke tests are quick tests designed to ensure that applications and services ha
     Now that we have a worker pool to host our workers and a machine policy to clean up any workers that have been deleted, we can create the workers in the Kubernetes cluster.
 </p>
 <p>
-    Because tentacles are provided as a Docker image, deploying workers into a Kubernetes cluster is the same process as deploying any other container. This means we will use the <b>Deploy Kubernetes containers</b> step just as we did to deploy the containers in <a href="#chapter1">chapter 1</a>. 
+    Because Tentacles are provided as a Docker image, deploying workers into a Kubernetes cluster is the same process as deploying any other container. This means we will use the <b>Deploy Kubernetes containers</b> step just as we did to deploy the containers in <a href="#chapter1">chapter 1</a>. 
 </p>
 <p>
     In the <b>Kubernetes DevOps</b> project create a new runbook called <b>Create Kubernetes Workers</b>, and add the <b>Deploy Kubernetes containers</b> step to the process.
@@ -228,33 +228,33 @@ spec:
     There are two important implications in the way these workers have been configured.
 </p>
 <p>
-    Note that the <b>ServerPort</b> environment variable has been set to <b>10943</b>. This setting defines the port on the Octopus server to connect a polling tentacle to. By including this environment variable we have also implicitly configured the worker as a polling tentacle.
+    Note that the <b>ServerPort</b> environment variable has been set to <b>10943</b>. This setting defines the port on the Octopus server to connect a Polling Tentacle to. By including this environment variable we have also implicitly configured the worker as a Polling Tentacle.
 </p>
 <p>
     Tentacles have two modes of operation, polling and listening.
 </p>
 <p>
-    In polling mode, the tentacle reaches out to the Octopus server to receive any new instructions. This means the tentacle instance does not need to expose any ports, as all network traffic is initiated from the tentacle to the server:
+    In polling mode, the Tentacle reaches out to the Octopus server to receive any new instructions. This means the Tentacle instance does not need to expose any ports, as all network traffic is initiated from the Tentacle to the server:
 </p>
 <div><img alt="Octopus environments" src="images/octopus/polling.png"/></div>
 <p>
-    In listening mode, the tentacle receives traffic directly from the Octopus server. This means the tentacle must have a fixed hostname or IP address and open port (10933 by default) that the Octopus server can connect to:
+    In listening mode, the Tentacle receives traffic directly from the Octopus server. This means the Tentacle must have a fixed hostname or IP address and open port (10933 by default) that the Octopus server can connect to:
 </p>
 <div><img alt="Octopus environments" src="images/octopus/listening.png"/></div>
 <p>
-    Polling tentacles introduce a short delay between when the Octopus server initiates a deployment, and the tentacle polls the server for new instructions. Listening tentacles do not have this delay as the server will reach out directly when work needs to be performed.
+    Polling Tentacles introduce a short delay between when the Octopus server initiates a deployment, and the Tentacle polls the server for new instructions. Listening Tentacles do not have this delay as the server will reach out directly when work needs to be performed.
 </p>
 <p>
-    However, polling tentacles remove the overhead of a static host name or IP address and open ports. This makes them much easier to configure, potentially more secure, and in our case removes the need to configure a service to expose the pods hosting the tentacle containers. For these reasons we have configured our workers as polling tentacles.
+    However, Polling Tentacles remove the overhead of a static host name or IP address and open ports. This makes them much easier to configure, potentially more secure, and in our case removes the need to configure a service to expose the pods hosting the Tentacle containers. For these reasons we have configured our workers as Polling Tentacles.
 </p>
 <p>
     The second setting to pay attention to is <b>privileged</b>, which has been set to <b>true</b>. Granting the containers privileged mode allows then to run Docker-in-Docker, which is used to run container images in a worker that is itself a Docker image.
 </p>
 <p>
-    If you recall from <a href="#chapter1">chapter 1</a>, our Kubernetes deployments required access to <b>kubectl</b>. The tentacle Docker image does not have <b>kubectl</b> installed, which means we need some way to expose this tool to our deployments.
+    If you recall from <a href="#chapter1">chapter 1</a>, our Kubernetes deployments required access to <b>kubectl</b>. The Tentacle Docker image does not have <b>kubectl</b> installed, which means we need some way to expose this tool to our deployments.
 </p>
 <p>
-    We have the option of building our own Docker image based on the tentacle image with <b>kubectl</b> baked in. The code below shows a <b>Dockerfile</b> file to achieve this:
+    We have the option of building our own Docker image based on the Tentacle image with <b>kubectl</b> baked in. The code below shows a <b>Dockerfile</b> file to achieve this:
 </p>
 <pre class="wrapPre">
 FROM octopusdeploy/tentacle
@@ -283,7 +283,7 @@ docker login
 docker push mcasperson/k8stentacle
 </pre>
 <p>
-    You can now replace the <b>image</b> setting in the YAML file with <b>index.docker.io/mcasperson/k8stentacle</b> to deploy the custom Docker image with <b>kubectl</b> installed. In this case, we no longer need to use Docker-in-Docker, and the <b>privileged</b> flag can be set to <b>false</b> (or not defined at all, in which case it will default to false). To disable Docker-in-Docker on the tentacle we also need to set the <b>DISABLE_DIND</b> environment variable to <b>Y</b>:
+    You can now replace the <b>image</b> setting in the YAML file with <b>index.docker.io/mcasperson/k8stentacle</b> to deploy the custom Docker image with <b>kubectl</b> installed. In this case, we no longer need to use Docker-in-Docker, and the <b>privileged</b> flag can be set to <b>false</b> (or not defined at all, in which case it will default to false). To disable Docker-in-Docker on the Tentacle we also need to set the <b>DISABLE_DIND</b> environment variable to <b>Y</b>:
 </p>
 <pre class="wrapPre">
 apiVersion: apps/v1
@@ -338,10 +338,10 @@ spec:
     Don't use the image <b>mcasperson/k8stentacle</b> in your own cluster, as it is not maintained, and has been shown here for demonstration purposes. Replace this image with one pushed to your own repository.
 </p>
 <p>
-    Baking tools directly into a tentacle image as we just did with <b>kubectl</b> is a perfectly valid solution. Indeed it is the only solution in environments that do not support privileged containers; for example, GKE with autopilot, and Azure Kubernetes Service (AKS) with virtual nodes.
+    Baking tools directly into a Tentacle image as we just did with <b>kubectl</b> is a perfectly valid solution. Indeed it is the only solution in environments that do not support privileged containers; for example, GKE with autopilot, and Azure Kubernetes Service (AKS) with virtual nodes.
 </p>
 <p>
-    However, the downside to creating your own tentacle images is you're responsible for updating the image with new tool versions and redeploying workers. Lifting these requirements from the base operating system (or base Docker image in our case) into a specialized Docker image is one of the main benefits of container images. 
+    However, the downside to creating your own Tentacle images is you're responsible for updating the image with new tool versions and redeploying workers. Lifting these requirements from the base operating system (or base Docker image in our case) into a specialized Docker image is one of the main benefits of container images. 
 </p>
 <p>
     Looping back to the reason why we set the <b>privileged</b> mode to <b>true</b>; running a container image in a worker that is itself a Docker container requires running Docker-in-Docker, and running Docker-in-Docker requires privileged containers. With privileged worker containers we can continue to use container images as we did when deploying our application in <a href="#chapter1">chapter 1</a>, and take advantage of all their benefits. For this reason the example tests shown below assume Docker-in-Docker is enabled and container images can be used.
@@ -379,7 +379,7 @@ psql \
     It can be hard to understand the layers that went into running this test script, so let's break it down:
 </p>
 <ul>
-    <li>We have a tentacle running as a worker in a pod hosted on Kubernetes.</li>
+    <li>We have a Tentacle running as a worker in a pod hosted on Kubernetes.</li>
     <li>We enable Docker-in-Docker inside the container hosting the worker.</li>
     <li>We build a container from the container image in the Docker-in-Docker environment.</li>
     <li>Calamari then runs inside the nested container in the Docker-in-Docker environment.</li>
@@ -736,13 +736,13 @@ exit ${RESULT}
     Making use of container images in workers hosted in a Kubernetes cluster requires them to be privileged. This is a requirement to use Docker-in-Docker. But what can you do if privileged containers are not an option for you?
 </p>
 <p>
-    One option that we have already seen is to add the required tools to the base tentacle image. This is fine for simple tools like <b>kubectl</b>. However, adding complex tools to the tentacle image can be a significant undertaking. For example, adding a tool like Cypress to the tentacle image requires reverse engineering the existing Cypress Docker build files and adding those instructions to the base tentacle image. Even if it were possible to do this, it would be hard to justify the time required to build such an image.
+    One option that we have already seen is to add the required tools to the base Tentacle image. This is fine for simple tools like <b>kubectl</b>. However, adding complex tools to the Tentacle image can be a significant undertaking. For example, adding a tool like Cypress to the Tentacle image requires reverse engineering the existing Cypress Docker build files and adding those instructions to the base Tentacle image. Even if it were possible to do this, it would be hard to justify the time required to build such an image.
 </p>
 <p>
-    An easier solution is to do the reverse, by adding the tentacle on top of the existing Docker image, provided by tools like Cypress. We've already seen how to build custom images based on existing images to add dependencies like <b>libicu</b>. Fortunately, it's relatively easy to take this process one step further and add the tentacle itself.
+    An easier solution is to do the reverse, by adding the Tentacle on top of the existing Docker image, provided by tools like Cypress. We've already seen how to build custom images based on existing images to add dependencies like <b>libicu</b>. Fortunately, it's relatively easy to take this process one step further and add the Tentacle itself.
 </p>
 <p>
-    The <b>Dockerfile</b> below adds a tentacle as a worker on top of the base Cypress image:
+    The <b>Dockerfile</b> below adds a Tentacle as a worker on top of the base Cypress image:
 </p>
 <pre class="wrapPre">
 FROM cypress/included:6.6.0
@@ -789,13 +789,13 @@ CMD ["/opt/configure.sh"]
     The commands in this Dockerfile, up to the point of the <b>curl</b> command, are the same as we defined in the previous section when building a Cypress container image. Refer to the previous section for more details on these commands.
 </p>
 <p>
-    The <b>curl</b> command downloads a copy of the Linux tentacle archive. We then create a directory called <b>/opt/octopus</b> and extract the TAR file into it.
+    The <b>curl</b> command downloads a copy of the Linux Tentacle archive. We then create a directory called <b>/opt/octopus</b> and extract the TAR file into it.
 </p>
 <p>
-    The next series of <b>echo</b> commands build up a script file that configures and runs the tentacle.
+    The next series of <b>echo</b> commands build up a script file that configures and runs the Tentacle.
 </p>
 <p>
-    The easiest way to get these commands is to install a tentacle on a Linux operating system and run through the configuration script at <b>/opt/octopus/tentacle/configure-tentacle.sh</b>. The final step in the configuration script presents the list of commands that will be run to configure the tentacle. An example of that output is shown below:
+    The easiest way to get these commands is to install a Tentacle on a Linux operating system and run through the configuration script at <b>/opt/octopus/tentacle/configure-tentacle.sh</b>. The final step in the configuration script presents the list of commands that will be run to configure the Tentacle. An example of that output is shown below:
 </p>
 <pre class="wrapPre">
 tentacle$ sudo /opt/octopus/tentacle/configure-tentacle.sh
@@ -822,10 +822,10 @@ Press enter to continue...
     As you can see, the commands the configuration script would have run have been echoed into the <b>/opt/configure.sh</b> file as part of building our Docker image, with values for the server URL, space, API key, worker pool, and name replaced with environment variables.
 </p>
 <p>
-    The only command we didn't run was <b>/opt/octopus/tentacle/Tentacle service --install --start --instance "Worker"</b>, which starts a systemd service. Our Docker image isn't running systemd, so this command is not required. Instead we run <b>/opt/octopus/tentacle/Tentacle agent --noninteractive --instance "Worker"</b> to start the tentacle manually.
+    The only command we didn't run was <b>/opt/octopus/tentacle/Tentacle service --install --start --instance "Worker"</b>, which starts a systemd service. Our Docker image isn't running systemd, so this command is not required. Instead we run <b>/opt/octopus/tentacle/Tentacle agent --noninteractive --instance "Worker"</b> to start the Tentacle manually.
 </p>
 <p class="note">
-    The documentation at <a href="https://octopus.com/docs/infrastructure/deployment-targets/linux/tentacle#installing-tentacle">https://octopus.com/docs/infrastructure/deployment-targets/linux/tentacle#installing-tentacle</a> has details on installing a tentacle on Linux and running the configuration script.
+    The documentation at <a href="https://octopus.com/docs/infrastructure/deployment-targets/linux/tentacle#installing-tentacle">https://octopus.com/docs/infrastructure/deployment-targets/linux/tentacle#installing-tentacle</a> has details on installing a Tentacle on Linux and running the configuration script.
 </p>
 <p class="note">
     systemd is the software  that runs daemons, or services, in most modern Linux distributions.
@@ -834,10 +834,10 @@ Press enter to continue...
     To allow the bash script we created with the <b>echo</b> statements to be executed, we add the executable flag via <b>chmod</b>.
 </p>
 <p>
-    The base Cypress image had defined an entrypoint which ran the <b>cypress</b> executable. This makes sense for the Cypress image, but is not useful when our image needs to run the tentacle instead of cypress. So we clear the entrypoint by setting it to an empty array.
+    The base Cypress image had defined an entrypoint which ran the <b>cypress</b> executable. This makes sense for the Cypress image, but is not useful when our image needs to run the Tentacle instead of cypress. So we clear the entrypoint by setting it to an empty array.
 </p>
 <p>
-    Finally we set the script <b>/opt/configure.sh</b> to be run when the container is started. This will configure the tentacle and run it.
+    Finally we set the script <b>/opt/configure.sh</b> to be run when the container is started. This will configure the Tentacle and run it.
 </p>
 <p>
     To deploy the worker, configure a <b>Deploy Kubernetes containers</b> step with the YAML shown below, replacing the <b>ServerUrl</b> and <b>Space</b> environment variables with your own Octopus server and space. Note that this container does not have the <b>privileged</b> option set, and disables Docker-in-Docker by setting the <b>DISABLE_DIND</b> environment variable to <b>Y</b>:
@@ -899,7 +899,7 @@ spec:
     However, these images no longer require any special permissions, allowing them to be used universally across different Kubernetes clusters.
 </p>
 <p>
-    If you find yourself in a situation where privileged containers are not an option, adding a tentacle to an existing third party Docker image to create a specialized worker image is your best bet for running tests inside a Kubernetes cluster.
+    If you find yourself in a situation where privileged containers are not an option, adding a Tentacle to an existing third party Docker image to create a specialized worker image is your best bet for running tests inside a Kubernetes cluster.
 </p>
 <h3>Modifying tests for other environments</h3>
 <p>
@@ -1076,7 +1076,7 @@ psql \
 <ul>
     <li>Discussed the practical decisions around where tests are run.</li>
     <li>Deployed workers directly into the Kubernetes cluster to give tests access to private services.</li>
-    <li>Discussed how tentacles implement Docker-in-Docker, to allow container images to be run in a Kubernetes cluster.</li>
+    <li>Discussed how Tentacles implement Docker-in-Docker, to allow container images to be run in a Kubernetes cluster.</li>
     <li>Created specialized worker images, based on third party Docker images, that do not require privileged rights.</li>
     <li>Ran smoke tests against the backend database and frontend web application.</li>
     <li>Ran an integration test against the frontend API using Postman and its command line tool Newman.</li>

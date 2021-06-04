@@ -14,7 +14,7 @@
 </p>
 <h2>Standardized {{ site.platform }} deployments</h2>
 <p>
-    If you recall from <a href="#chapter2">chapter 2</a> we deployed a tentacle Docker image as a worker inside our Kubernetes cluster. The configuration of the <b>Deploy Kubernetes containers</b> step will be very similar for all workers, with the only major differences being the Octopus server URL, API key, space, and machine policy that the worker is configured with. The remaining values, like the Docker image and memory limits, will be consistent for all workers.
+    If you recall from <a href="#chapter2">chapter 2</a> we deployed a Tentacle Docker image as a worker inside our Kubernetes cluster. The configuration of the <b>Deploy Kubernetes containers</b> step will be very similar for all workers, with the only major differences being the Octopus server URL, API key, space, and machine policy that the worker is configured with. The remaining values, like the Docker image and memory limits, will be consistent for all workers.
 </p>
 <p>
     This is a perfect example of providing a shared template that defines all the common settings, while allowing the few customizations to be supplied by those creating the deployment process. This is provided in Octopus through step templates.
@@ -79,7 +79,7 @@
 </p>
 <h3>Docker images as parameters</h3>
 <p>
-    The step template we created above exposed a number of simple text fields as parameters. This is fine in most cases, but a special case may be where we want to allow the user of the step template to select the package/image. For example, we might want to allow the user of the step template to switch between the official Octopus Docker image or a custom one like we created to add a tentacle to the existing Cypress image.
+    The step template we created above exposed a number of simple text fields as parameters. This is fine in most cases, but a special case may be where we want to allow the user of the step template to select the package/image. For example, we might want to allow the user of the step template to switch between the official Octopus Docker image or a custom one like we created to add a Tentacle to the existing Cypress image.
 </p>
 <p>
     Add a new parameter called <b>DeployKubernetesWorkerImage</b>, and set the <b>Control type</b> to Package. Then go back to the container defined in the step, expand the <b>Image Details</b> section, under the <b>Package Image</b> field select the <b>Let the project select the package</b> option, and then select the <b>DeployKubernetesWorkerImage</b> parameter.
